@@ -1,0 +1,69 @@
+C51 COMPILER V7.06   TRACK                                                                 07/03/2019 10:21:39 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE TRACK
+OBJECT MODULE PLACED IN track.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\UV2\C51\BIN\C51.EXE track.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include "track.h"           
+   2          #include "basic.h"
+   3          #include "carbasic.h"
+   4          #include "delay.h"
+   5          
+   6          extern uchar Pwm_Duty_motor;
+   7          
+   8          void infrared_track(void){
+   9   1                      if(Left_track_led == 1 && Right_track_led == 0){
+  10   2                              Pwm_Duty_motor = 80;
+  11   2                              while(Left_track_led == 1 && Right_track_led == 0){
+  12   3                                      circle_left();
+  13   3                                      if(!Left_track_led)
+  14   3                                              break;
+  15   3                              }
+  16   2                      }else if(Left_track_led == 0 && Right_track_led == 1){
+  17   2                              Pwm_Duty_motor = 80;
+  18   2                              while(Left_track_led == 0 && Right_track_led == 1){
+  19   3                                      circle_right();
+  20   3                                      if(!Right_track_led)
+  21   3                                              break;
+  22   3                              }
+  23   2                      }else if(Right_track_led & Left_track_led){
+  24   2                                      forward();
+  25   2                                      beep = ~beep;
+  26   2                                      DelayMs(100);
+  27   2                              
+  28   2                      }else if(Left_avoid_led ==1 && Right_avoid_led ==0){
+  29   2                              Pwm_Duty_motor = 35;
+  30   2                              circle_left();
+  31   2                              DelayMs(1);     
+  32   2                      }else if(Left_avoid_led ==0 && Right_avoid_led ==1){
+  33   2                              Pwm_Duty_motor = 35;
+  34   2                              circle_right();
+  35   2                              DelayMs(1);
+  36   2                      }else if(Left_avoid_led ==0 && Right_avoid_led ==0){
+  37   2                              stop();
+  38   2                      }else{
+  39   2                              Pwm_Duty_motor = 30;
+  40   2                              forward();
+  41   2                      }
+  42   1      }
+  43          
+  44          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    108    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V7.06   TRACK                                                                 07/03/2019 10:21:39 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

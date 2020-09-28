@@ -1,0 +1,48 @@
+C51 COMPILER V7.06   UART                                                                  07/03/2019 10:21:40 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN uart.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\UV2\C51\BIN\C51.EXE uart.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <reg52.h>
+   2          #include "uart.h"
+   3          
+   4          void Uart_Init(void){
+   5   1              //用定时器2进行串口发送数据的定时
+   6   1              SCON=0x50; //SM0 SM1 SM2 REN TB8 RB8 TI RI
+   7   1              RCAP2H=(65536-36)/256;//36:9600  3:115200
+   8   1              RCAP2L=(65536-36)%256;
+   9   1              TH2=RCAP2H;
+  10   1              TL2=RCAP2L;
+  11   1              T2CON=0x34; //TF2 EXF2 RCLK TCLK EXEN2 TR2 C/T2 CP/RL2 0011 0100
+  12   1              PS = 1;
+  13   1              EA=1;
+  14   1              ES=1;
+  15   1      }
+  16          void Uart_SendStr(uchar *buf){
+  17   1              uchar i=0;
+  18   1              while(*(buf+i)!='\0'){
+  19   2                      SBUF=*(buf+i);  //启动一次串口发送
+  20   2                      while(!TI);     //等待数据发送完毕
+  21   2                      TI=0; //TI清0，等待下次发送准备
+  22   2                      
+  23   2                      i++;            
+  24   2              }       
+  25   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     60    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,104 @@
+C51 COMPILER V7.06   ULTRASONIC                                                            07/03/2019 10:21:39 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE ULTRASONIC
+OBJECT MODULE PLACED IN Ultrasonic.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\UV2\C51\BIN\C51.EXE Ultrasonic.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include "Ultrasonic.h"
+   2          #include "delay.h"
+   3          #include "basic.h"
+   4          #include "uart.h"
+   5          #include "carbasic.h"
+   6          #include <stdio.h>
+   7          #include <string.h>
+   8          
+   9          uint dis = 0;//超声波测得的距离
+  10          bit timer0_Overflag = 0;
+  11          bit move_flag = 0;
+  12          void timer0_init(void){
+  13   1              TMOD = TMOD|0x01;
+  14   1              EA = 1;
+  15   1              ET0 = 1;
+  16   1      }
+  17          
+  18          void timer0_start(){
+  19   1              TH0 = TL0 = 0;
+  20   1              TR0 = 1;
+  21   1      }
+  22          
+  23          
+  24          
+  25          void timer0_stop(){
+  26   1              TR0 = 0;
+  27   1      }
+  28          
+  29          void timer0_serv() interrupt 1{
+  30   1              ECHO = 0;//强制将ECHO设为0
+  31   1              timer0_Overflag = 1;
+  32   1      }
+  33          
+  34          void StartModule(void){//发出trig信号，启动测试
+  35   1              TRIG = 1;
+  36   1              DelayUs2x(6);
+  37   1              TRIG = 0;
+  38   1      }
+  39          
+  40          void Timer_Count(void){//计数ECHO信号的持续时长
+  41   1              while(!ECHO);
+  42   1              timer0_start();
+  43   1              while(ECHO);
+  44   1              timer0_stop();
+  45   1      }
+  46          void distance(void){
+  47   1              uchar disStr[20]="";
+  48   1              uint time;
+  49   1              time = TH0*256+TL0;
+  50   1              if(timer0_Overflag){
+  51   2                      timer0_Overflag = 0;
+  52   2                      //beep = 0;
+  53   2                      //DelaySec(1);
+  54   2                      //beep = 1;
+  55   2                      dis = 65535;
+C51 COMPILER V7.06   ULTRASONIC                                                            07/03/2019 10:21:39 PAGE 2   
+
+  56   2              }else{
+  57   2                      dis = time*0.01845;//精确到厘米，单位也是厘米
+  58   2              }
+  59   1              sprintf(disStr," %u ",dis);//打印到固定区域里
+  60   1              Uart_SendStr(disStr);
+  61   1      }
+  62          
+  63          void car_ultrasonic(void){
+  64   1               if(dis <= 20){
+  65   2                      move_flag = 1;
+  66   2              }else{
+  67   2                      move_flag = 0;
+  68   2              }
+  69   1      }
+  70          
+  71          void ultrasonic_once(void){//一次完成的测距过程
+  72   1              StartModule();
+  73   1              Timer_Count();
+  74   1              distance();
+  75   1              car_ultrasonic();
+  76   1      }
+  77          
+  78          
+  79          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    180    ----
+   CONSTANT SIZE    =     25    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2      20
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

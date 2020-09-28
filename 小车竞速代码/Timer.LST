@@ -1,0 +1,73 @@
+C51 COMPILER V7.06   TIMER                                                                 07/03/2019 10:21:39 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN Timer.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\UV2\C51\BIN\C51.EXE Timer.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include "Timer.h"
+   2          #include "carbasic.h"
+   3          
+   4          /*****************
+   5            设置中断时间为0.25ms，pwm周期为20ms,即是80次机器周期
+   6          ******************/
+   7          
+   8          uchar Pwm_Duty_motor = 0;
+   9          uchar Pwm_Steer_motor = 0;
+  10          
+  11          void timer1_init(){
+  12   1          TMOD = TMOD|0x20;
+  13   1          TH1 = TL1 = 256-230;
+  14   1          EA = 1;
+  15   1          ET1 = 1;
+  16   1          TR1 = 1;
+  17   1      }
+  18          
+  19          
+  20          void timer1_serve() interrupt 3{
+  21   1      
+  22   1          static uchar Pwm_Cnt_motor = 0;
+  23   1              
+  24   1              if(Pwm_Cnt_motor <= Pwm_Duty_motor){
+  25   2                      EN1=1;
+  26   2              EN2=1;
+  27   2              EN3=1;
+  28   2              EN4=1;
+  29   2              }else{
+  30   2                      EN1=0;
+  31   2              EN2=0;
+  32   2              EN3=0;
+  33   2              EN4=0;  
+  34   2              }
+  35   1      
+  36   1              /*if(Pwm_Cnt_motor <= Pwm_Steer_motor){
+  37   1                      steer = 1;
+  38   1              
+  39   1              }else{
+  40   1                      steer = 0;
+  41   1              }*/
+  42   1      
+  43   1              ++Pwm_Cnt_motor;
+  44   1              if(Pwm_Cnt_motor >= 80)
+  45   1                      Pwm_Cnt_motor = 0;
+  46   1      }
+  47          
+  48          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     62    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V7.06   TIMER                                                                 07/03/2019 10:21:39 PAGE 2   
+
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

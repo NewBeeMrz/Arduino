@@ -1,0 +1,105 @@
+C51 COMPILER V7.06   MAIN                                                                  07/03/2019 10:21:39 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\UV2\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include<reg52.h>
+   2          #include "delay.h"
+   3          #include "carbasic.h"
+   4          #include "basic.h"
+   5          #include "Timer.h"
+   6          #include "track.h"
+   7          #include "Ultrasonic.h"
+   8          #include "uart.h"
+   9          
+  10          extern uchar Pwm_Duty_motor;
+  11          extern uchar Pwm_steer_motor;
+  12          void main(void){
+  13   1              //timer0_init();
+  14   1              //Uart_Init();
+  15   1              timer1_init();
+  16   1              motor_init();
+  17   1              while(1){
+  18   2                      /*forward();
+  19   2                      ultrasonic_once();
+  20   2                      if(move_flag == 1){
+  21   2                              back();
+  22   2                              DelayMs(500);
+  23   2                              circle_right();
+  24   2                              DelayMs(1000);
+  25   2                      }*/
+  26   2                      
+  27   2                      infrared_track();
+  28   2                       
+  29   2                      //infrared_avoid();
+  30   2      
+  31   2                      /*Pwm_steer_motor = 2;
+  32   2                      DelaySec(1);
+  33   2                      Pwm_steer_motor = 4;
+  34   2                      DelaySec(1);
+  35   2                      Pwm_steer_motor = 6;
+  36   2                      DelaySec(1);
+  37   2                      Pwm_steer_motor = 8;
+  38   2                      DelaySec(1);
+  39   2                      Pwm_steer_motor = 10;
+  40   2                      DelaySec(1);            
+  41   2      
+  42   2                      Pwm_Duty_motor = 30;
+  43   2                      forward();
+  44   2                      DelaySec(3);
+  45   2                      stop();
+  46   2                      DelaySec(1);
+  47   2                      Pwm_Duty_motor = 60;
+  48   2                      back();
+  49   2                      DelaySec(3);
+  50   2                      stop();
+  51   2                      DelaySec(1);
+  52   2      
+  53   2                      
+  54   2      
+  55   2                      Pwm_Duty_motor = 40;
+C51 COMPILER V7.06   MAIN                                                                  07/03/2019 10:21:39 PAGE 2   
+
+  56   2                      forward();
+  57   2                      DelaySec(3);
+  58   2                      stop();
+  59   2                      DelaySec(1);
+  60   2      
+  61   2                      Pwm_Duty_motor = 40;
+  62   2                      forward_left();
+  63   2                      DelaySec(3);
+  64   2                      stop();
+  65   2                      DelaySec(1);
+  66   2                      
+  67   2                      Pwm_Duty_motor = 30;
+  68   2                      circle_right();
+  69   2                      DelaySec(3);
+  70   2                      stop();
+  71   2                      DelaySec(1);
+  72   2                      
+  73   2                      Pwm_Duty_motor = 70;
+  74   2                      circle_left();
+  75   2                      DelaySec(3);
+  76   2                      stop();
+  77   2                      DelaySec(1);*/          
+  78   2              }
+  79   1      
+  80   1      }                
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     11    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

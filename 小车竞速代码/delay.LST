@@ -1,0 +1,45 @@
+C51 COMPILER V7.06   DELAY                                                                 07/03/2019 10:21:39 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN delay.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\UV2\C51\BIN\C51.EXE delay.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include "delay.h"
+   2          
+   3          void DelayUs2x(uchar t){   
+   4   1              while(--t);
+   5   1      }
+   6          
+   7          void DelayMs(uchar t){
+   8   1              while(t--)      {
+   9   2                  //大致延时1mS       
+  10   2                      DelayUs2x(245);
+  11   2                  DelayUs2x(245);
+  12   2              }
+  13   1      }
+  14          
+  15          void DelaySec(uchar t){
+  16   1              t=t*5;
+  17   1              while(t--)      {
+  18   2                  //大致延时1mS       
+  19   2                      
+  20   2                      DelayMs(200);
+  21   2              }
+  22   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     46    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
